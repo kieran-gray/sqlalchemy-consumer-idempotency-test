@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:16.2
+    restart: "no"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d test" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    volumes:
+      - test-db-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=test
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+
+volumes:
+  test-db-data:
